@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    // Override point for customization after application launch.
+    
+    // Link Parse to heroku server
+    Parse.initialize(
+      with: ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
+        configuration.applicationId = "Instagram"
+        configuration.clientKey = "eq78nfh8hiehwihqfniy"  // set to nil assuming you have not set clientKey
+        configuration.server = "https://fathomless-dawn-95069.herokuapp.com/parse"
+      })
+    )
+    
+    
     return true
   }
 
