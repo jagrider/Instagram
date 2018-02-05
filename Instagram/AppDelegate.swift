@@ -17,6 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
+    // Set up subclass of PFObject
+    //Post.registerSubclass()
+    
     // Link Parse to heroku server
     Parse.initialize(
       with: ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
@@ -26,6 +29,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       })
     )
     
+    // check if user is logged in.
+    if PFUser.current() != nil {
+      let storyboard = UIStoryboard(name: "Main", bundle: nil)
+      // view controller currently being set in Storyboard as default will be overridden
+      window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "FeedViewController")
+      
+    }
+    
+    // Add logout observer
+    NotificationCenter.default.addObserver(forName: Notification.Name("didLogout"), object: nil, queue: OperationQueue.main) { (Notification) in
+      print("Logout notification received")
+      self.logOut()
+    }
     
     return true
   }
@@ -50,6 +66,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+  }
+  
+  func logOut() {
+    
+    // Logout the current user
+    PFUser.logOutInBackground(block: { (error) in
+      if let error = error {
+        print(error.localizedDescription)
+      } else {
+        print("Successful loggout")
+        // Load and show the login view controller
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+        self.window?.rootViewController = loginViewController
+      }
+    })
   }
 
 

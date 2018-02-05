@@ -1,39 +1,40 @@
 //
-//  LoginViewController.swift
+//  PostDetailsViewController.swift
 //  Instagram
 //
-//  Created by Jonathan Grider on 1/31/18.
+//  Created by Jonathan Grider on 2/5/18.
 //  Copyright © 2018 Jonathan Grider. All rights reserved.
 //
 
 import UIKit
 import Parse
+import ParseUI
 
-class LoginViewController: UIViewController {
+class PostDetailsViewController: UIViewController {
   
-  @IBOutlet weak var usernameField: UITextField!
-  @IBOutlet weak var passwordField: UITextField!
+  @IBOutlet weak var postImageView: PFImageView!
+  @IBOutlet weak var usernameLabel: UILabel!
+  @IBOutlet weak var timestampLabel: UILabel!
+  @IBOutlet weak var captionLabel: UILabel!
   
+  
+  var post: Post!
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Do any additional setup after loading the view.
+    if (post) != nil {
+      self.postImageView.file = self.post.media
+      self.postImageView.loadInBackground()
+      self.usernameLabel.text = self.post.author.username
+      self.captionLabel.text = self.post.caption
+      self.timestampLabel.text = self.post.timestamp
+    }
   }
   
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
-  }
-  
-  @IBAction func onSignIn(_ sender: Any) {
-    
-    
-  }
-  
-  @IBAction func onSignUp(_ sender: Any) {
-    
-    
   }
   
   
