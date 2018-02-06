@@ -15,12 +15,14 @@ class PostCell: UITableViewCell {
   @IBOutlet weak var postImageView: PFImageView!
   @IBOutlet weak var usernameLabel: UILabel!
   @IBOutlet weak var profilePictureImageView: UIImageView!
+  @IBOutlet weak var captionLabel: UILabel!
   
   var post: Post! {
     didSet {
       self.postImageView.file = self.post.media
       self.postImageView.loadInBackground()
       self.usernameLabel.text = self.post.author.username
+      self.captionLabel.text = self.post.caption
     }
   }
   
